@@ -1,16 +1,18 @@
-from django.db.models import Q
-from django.shortcuts import render
+# from django.db.models import Q
+from django.shortcuts import redirect, render
 
 from tasks import forms
 from tasks.models import Subject, Task
 
 
 def homepage(request):
+    tasks = Task.objects.all().order_by("-created")[0:4]
     return render(
         request,
         "tasks/homepage.html",
         {
             "title": "TaskMaster homepage",
+            "tasks": tasks,
         },
     )
 
@@ -119,12 +121,37 @@ def list_by_priority(request, priority):
 
 
 def create_task(request):
-    form = forms.CreateTaskForm()
+    if request.method == "POST":
+        form = forms.CreateTaskForm(request.POST)
+        if form.is_valid():
+            new_task = form.save()
+            return redirect("/")
+    else:
+        form = forms.CreateTaskForm()
     return render(
         request,
         "tasks/create_task.html",
         {
             "title": "Nueva Tarea",
+            "form": form,
+        },
+    )
+
+
+def edit_task(request, pk):
+    task = Task.objects.get(pk=pk)
+    if request.method == "POST":
+        form = forms.EditTaskForm(request.POST, instance=task)
+        if form.is_valid():
+            task = form.save()
+            return redirect("/")
+    else:
+        form = forms.EditTaskForm(instance=task)
+    return render(
+        request,
+        "tasks/edit_task.html",
+        {
+            "title": f"Editar tarea #{task.pk}",
             "form": form,
         },
     )

@@ -26,7 +26,6 @@ class Subject(models.Model):
         max_length=120,
         unique=True,
     )
-
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -39,9 +38,9 @@ class Task(models.Model):
         verbose_name = "Tarea"
         verbose_name_plural = "Tareas"
 
-    # id = models.AutoField(primary_key=True) se cre automaticamente
+    # id = models.AutoField(primary_key=True) Se crea automaticamnte
     title = models.CharField(
-        "título",
+        verbose_name="título",
         max_length=250,
         unique=True,
     )
@@ -61,11 +60,14 @@ class Task(models.Model):
             date_in_future,
         ],
     )
-    urgent = models.BooleanField("urgente", default=False)
+    urgent = models.BooleanField(
+        "Urgente",
+        default=False,
+    )
     priority = models.CharField(
-        "prioridad",
+        "Prioridad",
         max_length=1,
-        choices=(PRIORITIES),
+        choices=PRIORITIES,
         default="N",
     )
     created = models.DateTimeField(auto_now_add=True)

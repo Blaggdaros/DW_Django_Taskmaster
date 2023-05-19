@@ -20,8 +20,9 @@ from django.urls import path, re_path
 from tasks import views
 
 urlpatterns = [
-    path("", views.homepage),
+    path("", views.homepage, name="homepage"),
     path("tareas/alta/", views.create_task),
+    path("tareas/editar/<int:pk>/", views.edit_task, name="edit_task"),
     path("tareas/", views.list_tasks),
     path("lab/", views.lab_view),
     path("tareas/calendar/<int:year>/", views.list_tasks_per_year),

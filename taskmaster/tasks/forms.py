@@ -14,9 +14,9 @@ class SearchForm(forms.Form):
     priority = forms.MultipleChoiceField(
         label="Prioridad",
         required=False,
+        widget=forms.CheckboxSelectMultiple,
         choices=PRIORITIES,
     )
-
     urgent = forms.BooleanField(
         required=False,
         label="Urgente",
@@ -24,6 +24,12 @@ class SearchForm(forms.Form):
 
 
 class CreateTaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ["title", "subject", "due_date", "priority", "urgent"]
+
+
+class EditTaskForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ["title", "subject", "due_date", "priority", "urgent"]
